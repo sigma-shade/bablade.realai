@@ -8,6 +8,8 @@ export default function App() {
 
   const [typing, setTyping] = useState(false);
 
+  const [loading, setLoading] = useState(true);
+
   const messagesEndRef = useRef(null);
 
   const usedResponses = useRef(new Set());
@@ -23,6 +25,18 @@ export default function App() {
           lastTopic:"",
         };
   });
+
+  useEffect(()=>{
+
+    const timer = setTimeout(()=>{
+
+      setLoading(false);
+
+    },3000);
+
+    return ()=>clearTimeout(timer);
+
+  },[]);
 
   useEffect(()=>{
 
@@ -246,7 +260,32 @@ export default function App() {
 
     <div className="h-screen overflow-hidden bg-black text-white relative font-sans">
 
-      {/* glow bg */}
+      {/* loading screen */}
+
+      {loading && (
+
+        <div className="fixed inset-0 bg-black z-[9999] flex flex-col items-center justify-center animate-fadeOut">
+
+          <img
+            src="https://i.ibb.co/DHMJR9c3/Chat-GPT-Image-May-27-2026-09-46-55-AM.png"
+            className="w-24 h-24 object-contain mb-6 animate-float"
+          />
+
+          <h1 className="text-4xl font-semibold tracking-tight">
+            bablade.ai
+          </h1>
+
+          <div className="w-56 h-1 bg-zinc-900 rounded-full overflow-hidden mt-6">
+
+            <div className="h-full bg-blue-500 animate-loadingBar rounded-full"></div>
+
+          </div>
+
+        </div>
+
+      )}
+
+      {/* background */}
 
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(0,140,255,0.08),transparent_25%),radial-gradient(circle_at_bottom_right,rgba(0,140,255,0.06),transparent_25%)]"></div>
 
@@ -376,6 +415,55 @@ export default function App() {
         </div>
 
       </div>
+
+      {/* animations */}
+
+      <style>{`
+
+        @keyframes float {
+          0%,100% {
+            transform: translateY(0px);
+          }
+
+          50% {
+            transform: translateY(-8px);
+          }
+        }
+
+        @keyframes loadingBar {
+          from {
+            width: 0%;
+          }
+
+          to {
+            width: 100%;
+          }
+        }
+
+        @keyframes fadeOut {
+          0% {
+            opacity: 1;
+          }
+
+          100% {
+            opacity: 0;
+          }
+        }
+
+        .animate-float {
+          animation: float 2s ease-in-out infinite;
+        }
+
+        .animate-loadingBar {
+          animation: loadingBar 2.5s ease forwards;
+        }
+
+        .animate-fadeOut {
+          animation: fadeOut 1s ease forwards;
+          animation-delay: 2.5s;
+        }
+
+      `}</style>
 
     </div>
   );
