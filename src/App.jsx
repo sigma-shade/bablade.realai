@@ -200,11 +200,11 @@ export default function App() {
   }
 
   return (
-    <div className="h-screen overflow-hidden bg-black text-white relative font-sans">
+    <div className="h-screen overflow-hidden bg-[#05070d] text-white relative font-sans">
 
       {/* WARNING SCREEN (blocks everything) */}
       {showWarning && (
-        <div className="fixed inset-0 bg-black z-99999 flex items-center justify-center px-6">
+        <div className="fixed inset-0 bg-[#05070d] z-99999 flex items-center justify-center px-6">
           <div className="max-w-2xl bg-zinc-900 border border-red-500/20 rounded-2xl p-6 text-center">
 
             <h1 className="text-2xl font-semibold text-red-400 mb-3">
@@ -250,8 +250,9 @@ export default function App() {
       )}
 
       {/* background */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(0,140,255,0.08),transparent_25%),radial-gradient(circle_at_bottom_right,rgba(0,140,255,0.06),transparent_25%)]"></div>
+      <div className="absolute inset-0 bg-[#05070d]"></div>
 
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(0,140,255,0.12),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(0,140,255,0.08),transparent_40%),radial-gradient(circle_at_center,rgba(0,90,255,0.05),transparent_60%)]"></div>
       {/* topbar */}
       <div className="h-16 border-b border-white/5 backdrop-blur-xl flex items-center px-6 relative z-10">
 
@@ -298,7 +299,7 @@ export default function App() {
             >
               <div className={`max-w-[75%] px-5 py-4 rounded-3xl text-[15px] leading-7 backdrop-blur-xl border transition-all duration-300 ${
                 msg.sender === "user"
-                  ? "bg-zinc-900 border-white/5"
+                  ? "bg-[#0b0f1a] border-blue-500/10"
                   : "bg-[#0f0f0f] border-blue-500/10"
               }`}>
                 {msg.text}
@@ -324,8 +325,7 @@ export default function App() {
       {/* input */}
       <div className="absolute bottom-0 w-full flex justify-center px-5 pb-6 bg-linear-to-t from-black via-black/90 to-transparent z-20">
 
-        <div className="w-full max-w-4xl bg-zinc-900/90 border border-white/10 rounded-full flex items-center p-2 backdrop-blur-2xl">
-
+        <div className="w-full max-w-4xl bg-zinc-900/90 border border-blue-500/10 rounded-full flex items-center p-2 backdrop-blur-2xl shadow-[0_0_25px_rgba(0,140,255,0.08)]">
           <input
             type="text"
             placeholder="Talk to bablade.ai"
