@@ -6,7 +6,7 @@ export default function App() {
   const [typing, setTyping] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  // 🧠 NEW: startup warning modal
+  // ✅ SAFE: disclaimer (NOT blocking UI anymore)
   const [showDisclaimer, setShowDisclaimer] = useState(true);
 
   const messagesEndRef = useRef(null);
@@ -25,7 +25,7 @@ export default function App() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 3000);
+    }, 2500);
 
     return () => clearTimeout(timer);
   }, []);
@@ -38,7 +38,7 @@ export default function App() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, typing]);
 
-  // 🧠 CALM MODE KEYWORDS
+  // 🧠 CALM MODE DETECTOR
   function isCalmRequest(text) {
     const t = text.toLowerCase();
     return (
@@ -46,188 +46,131 @@ export default function App() {
       t.includes("what should i do") ||
       t.includes("help me") ||
       t.includes("fix me") ||
+      t.includes("overwhelmed") ||
       t.includes("i can't handle") ||
-      t.includes("i cant handle") ||
-      t.includes("overwhelmed")
+      t.includes("i cant handle")
     );
   }
 
   function calmResponse() {
     return (
-      "I hear you. Let’s slow things down for a second.\n\n" +
-      "Try this with me:\n" +
-      "1) Inhale slowly for 4 seconds\n" +
-      "2) Hold for 4 seconds\n" +
-      "3) Exhale for 6–8 seconds\n\n" +
-      "Do that a few times. You're not required to solve everything right now. " +
-      "Just focus on the next small step, not the whole situation."
+      "I hear you. Let’s slow things down.\n\n" +
+      "Try this:\n" +
+      "• Inhale for 4 seconds\n" +
+      "• Hold for 4 seconds\n" +
+      "• Exhale for 6–8 seconds\n\n" +
+      "Do this a few times. You don’t need to solve everything right now — just the next small step."
     );
   }
 
   const responseData = {
     greetings: [
       "Hey, I'm here for you.",
-      "It's good to hear from you.",
-      "How has your day been feeling so far?",
-      "Welcome back. How are things mentally today?",
-      "Hey. What's been on your mind lately?",
+      "How has your day been feeling?",
+      "Welcome back. What's going on?",
     ],
-
     stress: [
-      "That sounds mentally exhausting honestly.",
-      "You've probably been carrying too much pressure lately.",
-      "It's okay if your brain feels overloaded right now.",
-      "Want to slow things down for a second together?",
-      "You don't need to solve everything tonight.",
+      "That sounds mentally exhausting.",
+      "You’ve been under a lot of pressure.",
+      "It’s okay to slow down.",
     ],
-
     sad: [
-      "That sounds really heavy emotionally.",
-      "I'm listening.",
-      "You don't have to pretend everything is okay here.",
-      "That would've hurt anyone honestly.",
-      "Want to talk more about what caused it?",
+      "That sounds really heavy.",
+      "I’m listening.",
+      "You don’t have to hold it in here.",
     ],
-
     anxiety: [
-      "Your thoughts seem like they're moving really fast right now.",
-      "Try not to fight every thought at once.",
-      "Anxiety can make everything feel bigger than it actually is.",
-      "Take things one step at a time.",
-      "You don't need every answer immediately.",
+      "Your thoughts seem really fast right now.",
+      "Let’s take it one step at a time.",
+      "You don’t need all answers at once.",
     ],
-
     motivation: [
       "Small progress still counts.",
-      "You've already made it through difficult days before.",
-      "Try focusing on momentum instead of perfection.",
-      "Even tiny steps matter right now.",
+      "You’ve handled hard days before.",
     ],
-
     default: [
-      "I'm here with you.",
-      "Tell me a little more about that.",
-      "That sounds important to you.",
-      "How long have you been feeling like this?",
-      "I'm listening.",
+      "I’m here with you.",
+      "Tell me more about it.",
+      "I’m listening.",
     ],
-
     followUps: [
-      "Has this been bothering you for a while?",
-      "What do you think affected you the most?",
-      "Do you usually keep these feelings to yourself?",
-      "Has your sleep been okay lately?",
-      "What's been draining your energy the most recently?",
-      "Do you feel like you've had enough time to mentally rest?",
-      "Want to talk a little more about it?",
+      "Has this been going on for a while?",
+      "What’s been affecting you most?",
+      "Do you want to talk more about it?",
     ],
   };
 
   function getUniqueResponse(category) {
     const responses = responseData[category];
-
     const unused = responses.filter(
       (r) => !usedResponses.current.has(r)
     );
 
-    if (unused.length === 0) {
-      usedResponses.current.clear();
-      return responses[Math.floor(Math.random() * responses.length)];
-    }
-
+    const pool = unused.length ? unused : responses;
     const chosen =
-      unused[Math.floor(Math.random() * unused.length)];
+      pool[Math.floor(Math.random() * pool.length)];
 
     usedResponses.current.add(chosen);
     return chosen;
   }
 
   function detectCategory(text) {
-    const lower = text.toLowerCase();
+    const t = text.toLowerCase();
 
-    if (
-      lower.includes("hello") ||
-      lower.includes("hi") ||
-      lower.includes("hey")
-    ) return "greetings";
-
-    if (
-      lower.includes("stress") ||
-      lower.includes("tired") ||
-      lower.includes("pressure") ||
-      lower.includes("burnout") ||
-      lower.includes("exam")
-    ) return "stress";
-
-    if (
-      lower.includes("sad") ||
-      lower.includes("hurt") ||
-      lower.includes("cry") ||
-      lower.includes("lonely") ||
-      lower.includes("depressed")
-    ) return "sad";
-
-    if (
-      lower.includes("anxiety") ||
-      lower.includes("anxious") ||
-      lower.includes("overthinking") ||
-      lower.includes("panic") ||
-      lower.includes("worried")
-    ) return "anxiety";
-
-    if (
-      lower.includes("motivate") ||
-      lower.includes("goal") ||
-      lower.includes("productive") ||
-      lower.includes("improve")
-    ) return "motivation";
+    if (t.match(/hi|hello|hey/)) return "greetings";
+    if (t.match(/stress|tired|burnout|exam/)) return "stress";
+    if (t.match(/sad|cry|lonely|depressed/)) return "sad";
+    if (t.match(/anxiety|panic|worried|overthinking/))
+      return "anxiety";
+    if (t.match(/motivat|goal|productive|improve/))
+      return "motivation";
 
     return "default";
   }
 
   function sendMessage() {
-    if (input.trim() === "") return;
+    if (!input.trim()) return;
 
     const currentInput = input;
 
-    const userMessage = {
-      sender: "user",
-      text: currentInput,
-    };
+    setMessages((prev) => [
+      ...prev,
+      { sender: "user", text: currentInput },
+    ]);
 
-    setMessages((prev) => [...prev, userMessage]);
     setInput("");
     setTyping(true);
 
+    const category = detectCategory(currentInput);
+
     setMemory((prev) => ({
       ...prev,
-      lastMood: detectCategory(currentInput),
+      lastMood: category,
       lastTopic: currentInput,
     }));
 
     setTimeout(() => {
       let reply;
 
-      // 🧠 CALM MODE OVERRIDE (IMPORTANT PART)
+      // 🧠 CALM MODE OVERRIDE
       if (isCalmRequest(currentInput)) {
         reply = calmResponse();
       } else {
-        const category = detectCategory(currentInput);
-
         reply = getUniqueResponse(category);
 
         if (memory.lastMood === category) {
-          reply += " You've been feeling this way for a bit now.";
+          reply += " You’ve been feeling this way recently.";
         }
 
-        const shouldAskFollowUp = Math.random() > 0.5;
-
-        if (shouldAskFollowUp) {
-          const randomFollowUp =
+        if (Math.random() > 0.5) {
+          reply +=
+            " " +
             responseData.followUps[
-              Math.floor(Math.random() * responseData.followUps.length)
+              Math.floor(
+                Math.random() *
+                  responseData.followUps.length
+              )
             ];
-          reply += " " + randomFollowUp;
         }
       }
 
@@ -237,100 +180,63 @@ export default function App() {
       ]);
 
       setTyping(false);
-    }, 1200);
+    }, 1000);
   }
 
   return (
-    <div className="h-screen overflow-hidden bg-black text-white relative font-sans">
+    <div className="h-screen bg-black text-white relative overflow-hidden font-sans">
 
-      {/* 🧠 DISCLAIMER MODAL */}
+      {/* 🚨 NON-BLOCKING DISCLAIMER (safe version) */}
       {showDisclaimer && (
-        <div className="fixed inset-0 bg-black/95 z-[99999] flex items-center justify-center px-6">
-          <div className="max-w-2xl bg-zinc-900 border border-white/10 rounded-2xl p-6 text-sm leading-6">
-            <h2 className="text-xl font-semibold mb-4">
-              Important Notice
-            </h2>
+        <div className="fixed bottom-5 left-1/2 -translate-x-1/2 z-[9999] bg-zinc-900 border border-white/10 px-4 py-3 rounded-xl flex items-center gap-4 max-w-xl">
+          <p className="text-xs text-zinc-300">
+            This AI is for general support only and not medical advice.
+          </p>
 
-            <p className="text-zinc-300">
-              This AI is designed for conversational and emotional support purposes only.
-              It does not provide medical, psychological, or clinical diagnosis or treatment.
-              Any suggestions or responses should not be interpreted as professional advice.
-              If you are experiencing serious distress or a mental health crisis, please seek
-              help from a qualified professional or trusted support services in your area.
-              This system may generate general coping suggestions such as breathing exercises,
-              grounding techniques, or reflective prompts, but these are not substitutes for care.
-            </p>
-
-            <button
-              onClick={() => setShowDisclaimer(false)}
-              className="mt-5 px-5 py-2 bg-blue-600 rounded-full hover:scale-105 transition"
-            >
-              I Understand
-            </button>
-          </div>
+          <button
+            onClick={() => setShowDisclaimer(false)}
+            className="text-xs px-3 py-1 bg-blue-600 rounded-full"
+          >
+            OK
+          </button>
         </div>
       )}
 
-      {/* loading screen */}
+      {/* LOADING */}
       {loading && (
-        <div className="fixed inset-0 bg-black z-[9999] flex flex-col items-center justify-center animate-fadeOut">
-          <img
-            src="https://i.ibb.co/DHMJR9c3/Chat-GPT-Image-May-27-2026-09-46-55-AM.png"
-            className="w-24 h-24 object-contain mb-6 animate-float"
-          />
-
-          <h1 className="text-4xl font-semibold tracking-tight">
-            bablade.ai
-          </h1>
-
-          <div className="w-56 h-1 bg-zinc-900 rounded-full overflow-hidden mt-6">
-            <div className="h-full bg-blue-500 animate-loadingBar rounded-full"></div>
-          </div>
+        <div className="fixed inset-0 bg-black z-[9999] flex flex-col items-center justify-center">
+          <h1 className="text-3xl">bablade.ai</h1>
         </div>
       )}
 
-      {/* rest stays SAME UI */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(0,140,255,0.08),transparent_25%),radial-gradient(circle_at_bottom_right,rgba(0,140,255,0.06),transparent_25%)]"></div>
+      {/* CHAT AREA */}
+      <div className="h-[calc(100vh-80px)] overflow-y-auto p-4">
+        <div className="max-w-2xl mx-auto">
 
-      {/* topbar */}
-      <div className="h-16 border-b border-white/5 backdrop-blur-xl flex items-center px-6 relative z-10">
-        <div className="flex items-center gap-3">
-          <img
-            src="https://i.ibb.co/DHMJR9c3/Chat-GPT-Image-May-27-2026-09-46-55-AM.png"
-            className="w-9 h-9 object-contain"
-          />
-          <span className="font-semibold text-lg">
-            bablade.ai
-          </span>
-        </div>
-      </div>
-
-      {/* messages */}
-      <div className="h-[calc(100vh-64px)] overflow-y-auto pb-40 relative z-10">
-        <div className="max-w-4xl mx-auto px-5 pt-10">
-
-          {messages.map((msg, i) => (
+          {messages.map((m, i) => (
             <div
               key={i}
-              className={`mb-5 flex ${
-                msg.sender === "user"
+              className={`mb-3 flex ${
+                m.sender === "user"
                   ? "justify-end"
                   : "justify-start"
               }`}
             >
-              <div className="max-w-[75%] px-5 py-4 rounded-3xl bg-zinc-900 border border-white/5">
-                {msg.text}
+              <div
+                className={`px-4 py-3 rounded-2xl max-w-[75%] text-sm ${
+                  m.sender === "user"
+                    ? "bg-blue-600"
+                    : "bg-zinc-800"
+                }`}
+              >
+                {m.text}
               </div>
             </div>
           ))}
 
           {typing && (
-            <div className="flex justify-start mb-5">
-              <div className="bg-zinc-900 px-5 py-4 rounded-3xl flex gap-2">
-                <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce"></div>
-                <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce"></div>
-                <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce"></div>
-              </div>
+            <div className="text-zinc-400 text-sm">
+              typing...
             </div>
           )}
 
@@ -338,42 +244,27 @@ export default function App() {
         </div>
       </div>
 
-      {/* input */}
-      <div className="absolute bottom-0 w-full flex justify-center px-5 pb-6">
-        <div className="w-full max-w-4xl bg-zinc-900 rounded-full flex items-center p-2">
+      {/* INPUT */}
+      <div className="absolute bottom-0 w-full p-3 bg-black border-t border-white/10">
+        <div className="max-w-2xl mx-auto flex gap-2">
           <input
+            className="flex-1 bg-zinc-900 px-4 py-3 rounded-full outline-none"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-            className="flex-1 bg-transparent outline-none px-5"
+            onKeyDown={(e) =>
+              e.key === "Enter" && sendMessage()
+            }
+            placeholder="Talk to bablade.ai"
           />
+
           <button
             onClick={sendMessage}
-            className="w-12 h-12 bg-blue-600 rounded-full"
+            className="bg-blue-600 px-5 rounded-full"
           >
             ↑
           </button>
         </div>
       </div>
-
-      {/* animations */}
-      <style>{`
-        @keyframes float {
-          0%,100% { transform: translateY(0px); }
-          50% { transform: translateY(-8px); }
-        }
-        @keyframes loadingBar {
-          from { width: 0%; }
-          to { width: 100%; }
-        }
-        @keyframes fadeOut {
-          0% { opacity: 1; }
-          100% { opacity: 0; }
-        }
-        .animate-float { animation: float 2s infinite; }
-        .animate-loadingBar { animation: loadingBar 2.5s ease forwards; }
-        .animate-fadeOut { animation: fadeOut 1s ease forwards; animation-delay: 2.5s; }
-      `}</style>
     </div>
   );
 }
