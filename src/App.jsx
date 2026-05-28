@@ -40,48 +40,65 @@ export default function App() {
     });
   }, [messages, typing]);
 
-  const responseData = { greetings: [ "Hey, I'm here for you.", "It's good to hear from you.", "How has your day been feeling so far?", "Welcome back. How are things mentally today?", "Hey. What's been on your mind lately?", "I'm glad you came back.", "How have things been lately honestly?" ],
-    stress: [
+  const responseData = { greetings: [ 
+    "Hey, I'm here for you.", 
+    "It's good to hear from you.",
+    "How has your day been feeling so far?", 
+    "Welcome back. How are things mentally today?",
+    "Hey. What's been on your mind lately?", 
+    "I'm glad you came back.", 
+    "How have things been lately honestly?" 
+    ],
+    stress: [ 
       "That sounds mentally exhausting honestly.",
       "You've probably been carrying too much pressure lately.",
       "It's okay if your brain feels overloaded right now.",
       "Want to slow things down for a second together?",
-      "You don't need to solve everything tonight."
+      "You don't need to solve everything tonight.",
+      "That kind of stress can quietly build up over time.",
+      "Your mind sounds really overwhelmed lately."
     ],
     sad: [
       "That sounds really heavy emotionally.",
-      "I'm listening.",
+      "I'm listening.", 
       "You don't have to pretend everything is okay here.",
-      "That would've hurt anyone honestly.",
-      "Want to talk more about what caused it?"
+      "That would've hurt anyone honestly.", 
+      "Want to talk more about what caused it?", 
+      "That feeling can stay with someone for a while.", 
+      "You seem emotionally drained." 
     ],
-    anxiety: [
-      "Your thoughts seem like they're moving really fast right now.",
-      "Try not to fight every thought at once.",
-      "Anxiety can make everything feel bigger than it actually is.",
-      "Take things one step at a time.",
-      "You don't need every answer immediately."
+    anxiety: [ 
+      "Your thoughts seem like they're moving really fast right now.", 
+      "Try not to fight every thought at once.", 
+      "Anxiety can make everything feel bigger than it actually is.", 
+      "Take things one step at a time.", 
+      "You don't need every answer immediately.", 
+      "Your brain sounds stuck in overdrive right now.", 
+      "Overthinking can be exhausting mentally." 
     ],
-    motivation: [
-      "Small progress still counts.",
-      "You've already made it through difficult days before.",
-      "Try focusing on momentum instead of perfection.",
-      "Even tiny steps matter right now."
+    motivation: [ 
+      "Small progress still counts.", 
+      "You've already made it through difficult days before.", 
+      "Try focusing on momentum instead of perfection.", 
+      "Even tiny steps matter right now.", 
+      "You don't need to instantly become perfect.", 
+      "Progress matters more than speed." 
     ],
-    default: [
-      "I'm here with you.",
-      "Tell me a little more about that.",
-      "That sounds important to you.",
-      "How long have you been feeling like this?",
-      "I'm listening."
-    ],
-    followUps: [
-      "Has this been bothering you for a while?",
-      "What do you think affected you the most?",
-      "Do you usually keep these feelings to yourself?",
-      "Has your sleep been okay lately?",
-      "What's been draining your energy the most recently?",
-      "Do you feel like you've had enough time to mentally rest?",
+    default: [ "I'm here with you.", 
+      "Tell me a little more about that.", 
+      "That sounds important to you.", 
+      "How long have you been feeling like this?", 
+      "I'm listening attentively.", 
+      "That sounds like it's been affecting you a lot lately.", 
+      "I understand."
+     ],
+    followUps: [ 
+      "Has this been bothering you for a while?", 
+      "What do you think affected you the most?", 
+      "Do you usually keep these feelings to yourself?", 
+      "Has your sleep been okay lately?", 
+      "What's been draining your energy the most recently?", 
+      "Do you feel like you've had enough time to mentally rest?", 
       "Want to talk a little more about it?"
     ]
   };
