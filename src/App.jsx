@@ -40,14 +40,7 @@ export default function App() {
     });
   }, [messages, typing]);
 
-  const responseData = {
-    greetings: [
-      "Hey, I'm here for you.",
-      "It's good to hear from you.",
-      "How has your day been feeling so far?",
-      "Welcome back. How are things mentally today?",
-      "Hey. What's been on your mind lately?"
-    ],
+  const responseData = { greetings: [ "Hey, I'm here for you.", "It's good to hear from you.", "How has your day been feeling so far?", "Welcome back. How are things mentally today?", "Hey. What's been on your mind lately?", "I'm glad you came back.", "How have things been lately honestly?" ],
     stress: [
       "That sounds mentally exhausting honestly.",
       "You've probably been carrying too much pressure lately.",
