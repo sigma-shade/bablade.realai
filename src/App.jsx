@@ -42,7 +42,7 @@ export default function App() {
 
   const responseData = { greetings: [ 
     "Hey, I'm here for you.", 
-    "It's good to hear from you.",
+    "It's very good to hear from you.",
     "How has your day been feeling so far?", 
     "Welcome back. How are things mentally today?",
     "Hey. What's been on your mind lately?", 
