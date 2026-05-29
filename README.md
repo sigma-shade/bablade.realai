@@ -1,7 +1,8 @@
 # React + Vite
 
 Hey, This is B4blade_l3gend and this is my very own AI, bablade.ai
-I vibe coded this with React + JavaScript
+I vibe coded this with React + JavaScript.
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
