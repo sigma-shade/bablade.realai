@@ -72,7 +72,7 @@ export default function App() {
       "Try not to fight every thought at once.", 
       "Anxiety can make everything feel bigger than it actually is.", 
       "Take things one step at a time.", 
-      "You don't need every answer immediately.", 
+      "You don't need to answer every question immediately.", 
       "Your brain sounds stuck in overdrive right now.", 
       "Overthinking can be exhausting mentally." 
     ],
