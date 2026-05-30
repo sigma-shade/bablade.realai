@@ -9,205 +9,306 @@ export default function App() {
 
   const [showWarning, setShowWarning] = useState(true);
 
-  const messagesEndRef = useRef(null);
-  const usedResponses = useRef(new Set());
+  const messagesEndRef = useRef(null);  
+const messagesEndRef = useRef(null);
+const usedResponses = useRef(new Set());
 
-  const [memory, setMemory] = useState(() => {
-    const saved = localStorage.getItem("babladeMemory");
-    return saved
-      ? JSON.parse(saved)
-      : {
-          lastMood: "",
-          lastTopic: "",
-        };
-  });
-
-  useEffect(() => {
+useEffect(() => {
+  if (!showWarning) {
     const timer = setTimeout(() => {
       setLoading(false);
     }, 6000);
 
     return () => clearTimeout(timer);
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("babladeMemory", JSON.stringify(memory));
-  }, [memory]);
-
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({
-      behavior: "smooth",
-    });
-  }, [messages, typing]);
-
-  const responseData = { greetings: [ 
-    "Hey, I'm here for you.", 
-    "It's very good to hear from you.",
-    "How has your day been feeling so far?", 
-    "Welcome back. How are things mentally today?",
-    "Hey. What's been on your mind lately?", 
-    "I'm glad you came back.", 
-    "How have things been lately honestly?" 
-    ],
-    stress: [ 
-      "That sounds mentally exhausting honestly.",
-      "You've probably been carrying too much pressure lately.",
-      "It's okay if your brain feels overloaded right now.",
-      "Want to slow things down for a second together?",
-      "You don't need to solve everything tonight.",
-      "That kind of stress can quietly build up over time.",
-      "Your mind sounds really overwhelmed lately."
-    ],
-    sad: [
-      "That sounds really heavy emotionally.",
-      "I'm listening.", 
-      "You don't have to pretend everything is okay here.",
-      "That would've hurt anyone honestly.", 
-      "Want to talk more about what caused it?", 
-      "That feeling can stay with someone for a while.", 
-      "You seem emotionally drained." 
-    ],
-    anxiety: [ 
-      "Your thoughts seem like they're moving really fast right now.", 
-      "Try not to fight every thought at once.", 
-      "Anxiety can make everything feel bigger than it actually is.", 
-      "Take things one step at a time.", 
-      "You don't need to answer every question immediately.", 
-      "Your brain sounds stuck in overdrive right now.", 
-      "Overthinking can be exhausting mentally." 
-    ],
-    motivation: [ 
-      "Small progress still counts.", 
-      "You've already made it through difficult days before.", 
-      "Try focusing on momentum instead of perfection.", 
-      "Even tiny steps matter right now.", 
-      "You don't need to instantly become perfect.", 
-      "Progress matters more than speed." 
-    ],
-    default: [ "I'm here with you.", 
-      "Tell me a little more about that.", 
-      "That sounds important to you.", 
-      "How long have you been feeling like this?", 
-      "I'm listening attentively.", 
-      "That sounds like it's been affecting you a lot lately.", 
-      "I understand."
-     ],
-    followUps: [ 
-      "Has this been bothering you for a while?", 
-      "What do you think affected you the most?", 
-      "Do you usually keep these feelings to yourself?", 
-      "Has your sleep been okay lately?", 
-      "What's been draining your energy the most recently?", 
-      "Do you feel like you've had enough time to mentally rest?", 
-      "Want to talk a little more about it?"
-    ]
-  };
-
-  function getUniqueResponse(category) {
-    const responses = responseData[category];
-
-    const unused = responses.filter(
-      response => !usedResponses.current.has(response)
-    );
-
-    if (unused.length === 0) {
-      usedResponses.current.clear();
-      return responses[Math.floor(Math.random() * responses.length)];
-    }
-
-    const chosen =
-      unused[Math.floor(Math.random() * unused.length)];
-
-    usedResponses.current.add(chosen);
-    return chosen;
   }
+}, [showWarning]);
+
+useEffect(() => {
+  messagesEndRef.current?.scrollIntoView({
+    behavior: "smooth",
+  });
+}, [messages, typing]);
+
+const responseData = {
+
+  greetings: [
+    "Hey, it's good to hear from you.",
+    "Welcome back.",
+    "Hey there.",
+    "Glad you stopped by.",
+    "Nice seeing you again.",
+    "Hey, how's everything going?",
+    "What's been up lately?",
+    "How's your day treating you?"
+  ],
+
+  positive: [
+    "Ohh nice, that sounds like a really good day.",
+    "That's awesome to hear honestly.",
+    "Love hearing that.",
+    "Ayy that's great.",
+    "Sounds like things went pretty well.",
+    "That's the kind of update I like hearing.",
+    "Nice. Those kinds of days can really lift your mood.",
+    "That's genuinely good to hear.",
+    "Sounds like today had some good moments.",
+    "I'm happy to hear things went well."
+  ],
+
+  positiveFollowUps: [
+    "What ended up being the highlight?",
+    "What made today better than usual?",
+    "Anything specific put you in a good mood?",
+    "Was it one big thing or lots of small wins?",
+    "What happened?",
+    "What part of the day stood out most?",
+    "What are you happiest about today?"
+  ],
+
+  negative: [
+    "Ahh, that's rough.",
+    "That sounds like a difficult day.",
+    "Sorry things haven't been going great.",
+    "That honestly sounds exhausting.",
+    "Oof, that's never fun.",
+    "Sounds like you've had a lot on your plate.",
+    "That would bring most people down.",
+    "That sounds frustrating."
+  ],
+
+  negativeFollowUps: [
+    "What happened?",
+    "What made the day so difficult?",
+    "Was it one thing or several things piling up?",
+    "Do you want to talk about it?",
+    "What part bothered you the most?",
+    "How long has this been weighing on you?"
+  ],
+
+  stress: [
+    "That sounds mentally exhausting.",
+    "You've probably been carrying a lot lately.",
+    "That kind of pressure can build up quietly.",
+    "Sounds like your brain hasn't had much time to rest.",
+    "That's a lot to deal with.",
+    "Stress has a way of making everything feel heavier.",
+    "You've got a lot on your shoulders right now."
+  ],
+
+  anxiety: [
+    "Your mind sounds like it's moving a hundred miles an hour.",
+    "Overthinking can be incredibly draining.",
+    "That sounds stressful.",
+    "It's hard when your thoughts won't slow down.",
+    "Anxiety can make even small things feel huge.",
+    "Sounds like your brain is stuck in overdrive."
+  ],
+
+  sad: [
+    "That sounds really painful.",
+    "I'm sorry you're dealing with that.",
+    "That would've hurt a lot.",
+    "That sounds emotionally heavy.",
+    "I can understand why that would affect you.",
+    "That doesn't sound easy at all."
+  ],
+
+  motivation: [
+    "Small progress still counts.",
+    "You don't have to get everything right immediately.",
+    "Even tiny steps move you forward.",
+    "Momentum matters more than perfection.",
+    "You're probably capable of more than you think.",
+    "Progress is still progress."
+  ],
+
+  default: [
+    "I'm listening.",
+    "Tell me a little more about that.",
+    "That sounds important to you.",
+    "Interesting. Go on.",
+    "I'd like to hear more.",
+    "What happened next?",
+    "That sounds like it's been on your mind."
+  ]
+};
+
+function getUniqueResponse(category) {
+  const responses = responseData[category];
+
+  const unused = responses.filter(
+    r => !usedResponses.current.has(r)
+  );
+
+  if (unused.length === 0) {
+    usedResponses.current.clear();
+    return responses[Math.floor(Math.random() * responses.length)];
+  }
+
+  const chosen =
+    unused[Math.floor(Math.random() * unused.length)];
+
+  usedResponses.current.add(chosen);
+
+  return chosen;
+}
 
   function detectCategory(text) {
-    const lower = text.toLowerCase();
+  const lower = text.toLowerCase();
 
-    if (lower.includes("hello") || lower.includes("hi") || lower.includes("hey")) {
-      return "greetings";
-    }
-
-    if (
-      lower.includes("stress") ||
-      lower.includes("tired") ||
-      lower.includes("pressure") ||
-      lower.includes("burnout") ||
-      lower.includes("exam")
-    ) {
-      return "stress";
-    }
-
-    if (
-      lower.includes("sad") ||
-      lower.includes("hurt") ||
-      lower.includes("cry") ||
-      lower.includes("lonely") ||
-      lower.includes("depressed")
-    ) {
-      return "sad";
-    }
-
-    if (
-      lower.includes("anxiety") ||
-      lower.includes("anxious") ||
-      lower.includes("overthinking") ||
-      lower.includes("panic") ||
-      lower.includes("worried")
-    ) {
-      return "anxiety";
-    }
-
-    if (
-      lower.includes("motivate") ||
-      lower.includes("goal") ||
-      lower.includes("productive") ||
-      lower.includes("improve")
-    ) {
-      return "motivation";
-    }
-
-    return "default";
+  if (
+    lower.includes("hello") ||
+    lower.includes("hi") ||
+    lower.includes("hey") ||
+    lower.includes("yo")
+  ) {
+    return "greetings";
   }
+
+  if (
+    lower.includes("good") ||
+    lower.includes("great") ||
+    lower.includes("awesome") ||
+    lower.includes("amazing") ||
+    lower.includes("fantastic") ||
+    lower.includes("happy") ||
+    lower.includes("excited") ||
+    lower.includes("wonderful") ||
+    lower.includes("nice day") ||
+    lower.includes("best day")
+  ) {
+    return "positive";
+  }
+
+  if (
+    lower.includes("bad") ||
+    lower.includes("terrible") ||
+    lower.includes("awful") ||
+    lower.includes("worst") ||
+    lower.includes("upset") ||
+    lower.includes("angry") ||
+    lower.includes("hate") ||
+    lower.includes("annoyed")
+  ) {
+    return "negative";
+  }
+
+  if (
+    lower.includes("stress") ||
+    lower.includes("tired") ||
+    lower.includes("pressure") ||
+    lower.includes("burnout") ||
+    lower.includes("exam")
+  ) {
+    return "stress";
+  }
+
+  if (
+    lower.includes("sad") ||
+    lower.includes("hurt") ||
+    lower.includes("cry") ||
+    lower.includes("lonely") ||
+    lower.includes("heartbroken")
+  ) {
+    return "sad";
+  }
+
+  if (
+    lower.includes("anxiety") ||
+    lower.includes("anxious") ||
+    lower.includes("panic") ||
+    lower.includes("overthinking") ||
+    lower.includes("worried")
+  ) {
+    return "anxiety";
+  }
+
+  if (
+    lower.includes("goal") ||
+    lower.includes("motivate") ||
+    lower.includes("productive") ||
+    lower.includes("improve")
+  ) {
+    return "motivation";
+  }
+
+  return "default";
+}
 
   function sendMessage() {
-    if (input.trim() === "") return;
+  if (input.trim() === "") return;
 
-    const currentInput = input;
+  const currentInput = input;
 
-    setMessages(prev => [...prev, { sender: "user", text: currentInput }]);
-    setInput("");
-    setTyping(true);
+  setMessages(prev => [
+    ...prev,
+    {
+      sender: "user",
+      text: currentInput
+    }
+  ]);
 
-    const category = detectCategory(currentInput);
+  setInput("");
+  setTyping(true);
 
-    setMemory(prev => ({
+  const category = detectCategory(currentInput);
+
+  setTimeout(() => {
+
+    let reply = "";
+
+    if (category === "positive") {
+      reply =
+        getUniqueResponse("positive") +
+        " " +
+        getUniqueResponse("positiveFollowUps");
+    }
+
+    else if (category === "negative") {
+      reply =
+        getUniqueResponse("negative") +
+        " " +
+        getUniqueResponse("negativeFollowUps");
+    }
+
+    else if (
+      category === "stress" ||
+      category === "sad" ||
+      category === "anxiety" ||
+      category === "motivation"
+    ) {
+      reply =
+        getUniqueResponse(category);
+
+      if (Math.random() > 0.4) {
+        reply +=
+          " " +
+          getUniqueResponse("default");
+      }
+    }
+
+    else if (category === "greetings") {
+      reply =
+        getUniqueResponse("greetings");
+    }
+
+    else {
+      reply =
+        getUniqueResponse("default");
+    }
+
+    setMessages(prev => [
       ...prev,
-      lastMood: category,
-      lastTopic: currentInput
-    }));
-
-    setTimeout(() => {
-      let reply = getUniqueResponse(category);
-
-      if (memory.lastMood === category) {
-        reply += " You've been feeling this way for a bit now.";
+      {
+        sender: "ai",
+        text: reply
       }
+    ]);
 
-      if (Math.random() > 0.5) {
-        const randomFollowUp =
-          responseData.followUps[
-            Math.floor(Math.random() * responseData.followUps.length)
-          ];
-        reply += " " + randomFollowUp;
-      }
+    setTyping(false);
 
-      setMessages(prev => [...prev, { sender: "ai", text: reply }]);
-      setTyping(false);
-
-    }, 1200);
-  }
+  }, 1200);
+}
 
   return (
     <div className="h-screen overflow-hidden bg-[#05070d] text-white relative font-sans">
