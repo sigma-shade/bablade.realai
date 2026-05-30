@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Analytics } from "@vercel/analytics/next"
+import { Analytics } from "@vercel/analytics/react"
 
 export default function App() {
 
@@ -451,6 +451,7 @@ else if (category === "greetings") {
 }
 
   return (
+  <>
     <div className="h-screen overflow-hidden bg-[#05070d] text-white relative font-sans">
 
       {/* WARNING SCREEN (blocks everything) */}
@@ -621,8 +622,11 @@ else if (category === "greetings") {
           animation: fadeOut 1s ease forwards;
           animation-delay: 2.5s;
         }
-      `}</style>
+            `}</style>
 
     </div>
+
+    <Analytics />
+  </>
   );
 }
