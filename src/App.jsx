@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { Analytics } from "@vercel/analytics/next"
 
 export default function App() {
 
@@ -29,6 +30,41 @@ useEffect(() => {
 }, [messages, typing]);
 
 const responseData = {
+  reactionPositive: [
+  "Ohh nice.",
+  "That's awesome.",
+  "Ayy that's great.",
+  "Love hearing that.",
+  "That's genuinely good to hear.",
+  "Nice one.",
+  "That sounds pretty exciting."
+],
+
+reactionNegative: [
+  "Ahh that's rough.",
+  "Oof.",
+  "That sounds difficult.",
+  "Sorry you're dealing with that.",
+  "That's not easy.",
+  "That sounds frustrating.",
+  "I can see why that would bother you."
+],
+
+empathyPositive: [
+  "Sounds like things went well for you.",
+  "Those kinds of days can really boost your mood.",
+  "It's always nice when things fall into place.",
+  "Moments like that can make a big difference.",
+  "Sounds like today treated you well."
+],
+
+empathyNegative: [
+  "That would've been hard for most people.",
+  "Anyone would feel affected by that.",
+  "That sounds emotionally draining.",
+  "That can really stick with you.",
+  "I can understand why that's been on your mind."
+],
 
   greetings: [
     "Hey, it's good to hear from you.",
@@ -113,23 +149,57 @@ const responseData = {
   ],
 
   motivation: [
-    "Small progress still counts.",
-    "You don't have to get everything right immediately.",
-    "Even tiny steps move you forward.",
-    "Momentum matters more than perfection.",
-    "You're probably capable of more than you think.",
-    "Progress is still progress."
-  ],
+  "Small progress still counts.",
+  "You don't have to get everything right immediately.",
+  "Even tiny steps move you forward.",
+  "Momentum matters more than perfection.",
+  "You're probably capable of more than you think.",
+  "Progress is still progress."
+],
 
-  default: [
-    "I'm listening.",
-    "Tell me a little more about that.",
-    "That sounds important to you.",
-    "Interesting. Go on.",
-    "I'd like to hear more.",
-    "What happened next?",
-    "That sounds like it's been on your mind."
-  ]
+achievement: [
+  "Wow, that's impressive.",
+  "That's a huge accomplishment.",
+  "You should be proud of that.",
+  "Sounds like your hard work paid off.",
+  "That's genuinely exciting.",
+  "Nice work.",
+  "That's a moment worth celebrating."
+],
+
+achievementFollowUps: [
+  "How long were you working toward it?",
+  "What was the hardest part?",
+  "How did you feel when it happened?",
+  "What's next for you now?",
+  "Did you expect it?"
+],
+
+school: [
+  "School can definitely be stressful sometimes.",
+  "Sounds like you've got a lot going on academically.",
+  "Exams can put a lot of pressure on people.",
+  "That sounds like a busy schedule.",
+  "Balancing everything isn't always easy."
+],
+
+schoolFollowUps: [
+  "How are your exams going?",
+  "Which subject has been the toughest?",
+  "Are you feeling prepared?",
+  "What's been stressing you out the most?",
+  "How have you been managing it?"
+],
+
+default: [
+  "I'm listening.",
+  "Tell me a little more about that.",
+  "That sounds important to you.",
+  "Interesting. Go on.",
+  "I'd like to hear more.",
+  "What happened next?",
+  "That sounds like it's been on your mind."
+]
 };
 
 function getUniqueResponse(category) {
@@ -165,20 +235,30 @@ function getUniqueResponse(category) {
   }
 
   if (
-    lower.includes("good") ||
-    lower.includes("great") ||
-    lower.includes("awesome") ||
-    lower.includes("amazing") ||
-    lower.includes("fantastic") ||
-    lower.includes("happy") ||
-    lower.includes("excited") ||
-    lower.includes("wonderful") ||
-    lower.includes("nice day") ||
-    lower.includes("best day")
-  ) {
-    return "positive";
-  }
-
+  lower.includes("good") ||
+  lower.includes("great") ||
+  lower.includes("awesome") ||
+  lower.includes("amazing") ||
+  lower.includes("fantastic") ||
+  lower.includes("happy") ||
+  lower.includes("excited") ||
+  lower.includes("wonderful") ||
+  lower.includes("nice") ||
+  lower.includes("cool") ||
+  lower.includes("fun") ||
+  lower.includes("glad") ||
+  lower.includes("excellent") ||
+  lower.includes("brilliant") ||
+  lower.includes("perfect") ||
+  lower.includes("love it") ||
+  lower.includes("enjoyed") ||
+  lower.includes("successful") ||
+  lower.includes("went well") ||
+  lower.includes("nice day") ||
+  lower.includes("best day")
+) {
+  return "positive";
+}
   if (
     lower.includes("bad") ||
     lower.includes("terrible") ||
@@ -231,6 +311,29 @@ function getUniqueResponse(category) {
     return "motivation";
   }
 
+  if (
+    lower.includes("won") ||
+    lower.includes("first place") ||
+    lower.includes("award") ||
+    lower.includes("achievement") ||
+    lower.includes("promotion") ||
+    lower.includes("accomplished") ||
+    lower.includes("success")
+  ) {
+    return "achievement";
+  }
+
+  if (
+    lower.includes("school") ||
+    lower.includes("college") ||
+    lower.includes("test") ||
+    lower.includes("teacher") ||
+    lower.includes("homework") ||
+    lower.includes("class")
+  ) {
+    return "school";
+  }
+
   return "default";
 }
 
@@ -257,18 +360,22 @@ function getUniqueResponse(category) {
     let reply = "";
 
     if (category === "positive") {
-      reply =
-        getUniqueResponse("positive") +
-        " " +
-        getUniqueResponse("positiveFollowUps");
-    }
+  reply =
+    getUniqueResponse("reactionPositive") +
+    " " +
+    getUniqueResponse("empathyPositive") +
+    " " +
+    getUniqueResponse("positiveFollowUps");
+}
 
     else if (category === "negative") {
-      reply =
-        getUniqueResponse("negative") +
-        " " +
-        getUniqueResponse("negativeFollowUps");
-    }
+  reply =
+    getUniqueResponse("reactionNegative") +
+    " " +
+    getUniqueResponse("empathyNegative") +
+    " " +
+    getUniqueResponse("negativeFollowUps");
+}
 
     else if (
       category === "stress" ||
@@ -290,6 +397,40 @@ function getUniqueResponse(category) {
       reply =
         getUniqueResponse("greetings");
     }
+    else if (
+  category === "stress" ||
+  category === "sad" ||
+  category === "anxiety" ||
+  category === "motivation"
+) {
+  reply =
+    getUniqueResponse(category);
+
+  if (Math.random() > 0.4) {
+    reply +=
+      " " +
+      getUniqueResponse("default");
+  }
+}
+
+else if (category === "achievement") {
+  reply =
+    getUniqueResponse("achievement") +
+    " " +
+    getUniqueResponse("achievementFollowUps");
+}
+
+else if (category === "school") {
+  reply =
+    getUniqueResponse("school") +
+    " " +
+    getUniqueResponse("schoolFollowUps");
+}
+
+else if (category === "greetings") {
+  reply =
+    getUniqueResponse("greetings");
+}
 
     else {
       reply =
