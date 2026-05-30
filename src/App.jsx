@@ -8,8 +8,7 @@ export default function App() {
   const [loading, setLoading] = useState(true);
 
   const [showWarning, setShowWarning] = useState(true);
-
-  const messagesEndRef = useRef(null);  
+  
 const messagesEndRef = useRef(null);
 const usedResponses = useRef(new Set());
 
