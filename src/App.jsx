@@ -20,7 +20,6 @@ Your Core Personality:
 - You never sound like a customer service bot or a wellness app
 
 Professionalism Rules:
-
 - Never mock users.
 - Never be sarcastic toward emotional disclosures.
 - Never use dismissive humor.
@@ -41,9 +40,13 @@ How You Speak:
 - Don't repeat the same phrases within a conversation — vary absolutely everything
 
 Response Structure:
-- Lead with a genuine reaction or acknowledgment (1 line)
-- Then engage with what they actually said (1–2 lines)
-- Questions should be used sparingly.
+Respond naturally.
+
+Some replies may ask a question.
+Some replies may offer an observation.
+Some replies may simply stay with what the user shared.
+
+Do not follow a fixed structure.
 
 Many good responses end with:
 - an observation
@@ -101,6 +104,13 @@ Stress, anxiety, sadness, loneliness, motivation, school, college, friendships, 
 Keep it real. Keep it human. Keep it Bablade.`;
 
 const responseLibrary = {
+  crisis: [
+    "That sounds really serious. Can you tell me a bit more about what you mean by that?",
+    "I'm glad you said something. What's making you feel this way right now?",
+    "That sounds concerning. What's been happening?",
+    "When you say that, are you feeling overwhelmed or worried about something specific?",
+    "There's clearly a lot behind those words. Talk to me about what's going on."
+  ],
   reactionPositive: [
     "Ohh nice.",
     "That's awesome.",
@@ -117,7 +127,6 @@ const responseLibrary = {
     "That's a big deal.",
     "Wait, that's actually really cool.",
     "Yeah okay that's genuinely awesome.",
-    "Love that for you.",
     "Okay yeah that's a win.",
     "That sounds like it went well.",
     "Oh that's real good.",
@@ -126,13 +135,11 @@ const responseLibrary = {
 
   reactionNegative: [
     "Ahh that's rough.",
-    "Oof.",
     "That sounds difficult.",
     "Sorry you're dealing with that.",
     "That's not easy.",
     "That sounds frustrating.",
     "I can see why that would bother you.",
-    "Damn, that's a lot.",
     "That sounds exhausting honestly.",
     "Ugh, I get why that's hitting you hard.",
     "That's genuinely tough.",
@@ -703,9 +710,8 @@ const responseLibrary = {
     "Oh interesting.",
     "Wait really?",
     "That's wild.",
-    "Ha, fair enough.",
+    "Fair enough.",
     "Not bad.",
-    "Lowkey relatable.",
     "Okay that's kind of funny.",
     "Hm, hadn't thought about it like that.",
     "That's a mood.",
@@ -715,7 +721,7 @@ const responseLibrary = {
     "That's pretty solid.",
     "Facts.",
     "Yeah that checks out.",
-    "Bold take but I respect it."
+
   ],
 
   casualFollowUps: [
@@ -761,7 +767,17 @@ function detectCategory(text) {
   if (
     lower.match(/\b(hello|hi|hey|yo|sup|what'?s up|howdy|hiya)\b/)
   ) return "greetings";
-
+  if (
+  lower.includes("i want to die") ||
+  lower.includes("kill myself") ||
+  lower.includes("suicide") ||
+  lower.includes("end my life") ||
+  lower.includes("don't want to live") ||
+  lower.includes("hurt myself") ||
+  lower.includes("self harm") ||
+  lower.includes("im gonna die") ||
+  lower.includes("i'm gonna die")
+) return "crisis";
   if (
     lower.includes("burnout") ||
     (lower.includes("burnt out")) ||
@@ -945,16 +961,15 @@ function detectCategory(text) {
   ) return "negative";
 
   if (
-    lower.includes("lol") ||
-    lower.includes("lmao") ||
-    lower.includes("haha") ||
-    lower.includes("funny") ||
-    lower.includes("random") ||
-    lower.includes("bored") ||
-    lower.includes("what do you think") ||
-    lower.includes("just wanted to") ||
-    lower.includes("nothing much") ||
-    lower.length < 25
+  lower.includes("lol") ||
+  lower.includes("lmao") ||
+  lower.includes("haha") ||
+  lower.includes("funny") ||
+  lower.includes("random") ||
+  lower.includes("bored") ||
+  lower.includes("what do you think") ||
+  lower.includes("just wanted to") ||
+  lower.includes("nothing much")
   ) return "casual";
 
   return "default";
@@ -995,6 +1010,7 @@ function typingDelay(text) {
 }
 
 const categoryFallbackMap = {
+  crisis: ["crisis"],
   positive: ["reactionPositive", "empathyPositive", "positiveFollowUps"],
   negative: ["reactionNegative", "empathyNegative", "negativeFollowUps"],
   stress: ["stress", "stressFollowUps"],
