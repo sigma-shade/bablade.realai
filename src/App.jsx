@@ -701,7 +701,13 @@ const responseLibrary = {
     "That sounds like the kind of fear that follows you around.",
     "That level of worry about something is genuinely draining."
   ],
-
+  language: [
+    "Kindly mind your language.",
+    "Let's keep the conversation respectful.",
+    "Could you avoid that kind of language?",
+    "Please watch your language.",
+    "Let's keep things civil."
+  ],
   casual: [
     "Haha nice.",
     "That's actually pretty funny.",
@@ -736,7 +742,6 @@ const responseLibrary = {
     "Tell me something good.",
     "What's the vibe been like lately?"
   ],
-
   default: [
     "I'm listening.",
     "Tell me a little more about that.",
@@ -763,7 +768,7 @@ const responseLibrary = {
 
 function detectCategory(text) {
   const lower = text.toLowerCase();
-
+  
   if (
   lower.includes("i want to die") ||
   lower.includes("kill myself") ||
@@ -774,6 +779,45 @@ function detectCategory(text) {
   lower.includes("self harm") ||
   lower.includes("unalive")
 ) return "crisis";
+const badWords = [
+  "fuck",
+  "fucking",
+  "wtf",
+  "tf",
+  "ass",
+  "asf",
+  "bitch",
+  "btch",
+  "nigger",
+  "nigga",
+  "nga",
+  "sex",
+  "lesbian",
+  "lesbo",
+  "gay"
+];
+
+const containsBadWord = badWords.some(word =>
+  lower.includes(word)
+);
+
+if (containsBadWord) {
+  return "language";
+}
+
+if (
+  lower.match(/\b(hello|hi|hey|yo|sup|what'?s up|howdy|hiya)\b/)
+) return "greetings";
+
+
+const containsBadWord = badWords.some(word =>
+  lower.includes(word)
+);
+
+if (containsBadWord) {
+  return "language";
+}
+
   if (
     lower.includes("burnout") ||
     (lower.includes("burnt out")) ||
@@ -941,7 +985,7 @@ function detectCategory(text) {
     lower.includes("feeling good") ||
     lower.includes("on top")
   ) return "positive";
-
+  
   if (
     lower.includes("bad") ||
     lower.includes("terrible") ||
@@ -1213,7 +1257,7 @@ export default function App() {
       <div className="h-screen overflow-hidden bg-[#05070d] text-white relative font-sans">
 
         {showWarning && (
-          <div className="fixed inset-0 bg-[#05070d] z-[99999] flex items-center justify-center px-6">
+          <div className="fixed inset-0 bg-[#05070d] z-99999 flex items-center justify-center px-6">
             <div className="max-w-2xl bg-zinc-900 border border-red-500/20 rounded-2xl p-6 text-center">
               <h1 className="text-2xl font-semibold text-red-400 mb-3">
                 Important Notice
@@ -1237,7 +1281,7 @@ export default function App() {
         )}
 
         {!showWarning && loading && (
-          <div className="fixed inset-0 bg-black z-[99999] flex flex-col items-center justify-center animate-fadeOut">
+          <div className="fixed inset-0 bg-black z-99999 flex flex-col items-center justify-center animate-fadeOut">
             <img
               src="https://i.ibb.co/DHMJR9c3/Chat-GPT-Image-May-27-2026-09-46-55-AM.png"
               className="w-24 h-24 object-contain mb-6 animate-float"
@@ -1355,7 +1399,7 @@ export default function App() {
             100% { opacity: 0; }
           }
           .animate-float { animation: float 2s ease-in-out infinite; }
-          .animate-loadingBar { animation: loadingBar 2.5s ease forwards; }
+          .animate-loadingBar { animation: loadingBar 6s ease forwards; }
           .animate-fadeOut {
             animation: fadeOut 1s ease forwards;
             animation-delay: 2.5s;
