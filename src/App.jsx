@@ -810,14 +810,6 @@ if (
 ) return "greetings";
 
 
-const containsBadWord = badWords.some(word =>
-  lower.includes(word)
-);
-
-if (containsBadWord) {
-  return "language";
-}
-
   if (
     lower.includes("burnout") ||
     (lower.includes("burnt out")) ||
