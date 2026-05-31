@@ -765,9 +765,6 @@ function detectCategory(text) {
   const lower = text.toLowerCase();
 
   if (
-    lower.match(/\b(hello|hi|hey|yo|sup|what'?s up|howdy|hiya)\b/)
-  ) return "greetings";
-  if (
   lower.includes("i want to die") ||
   lower.includes("kill myself") ||
   lower.includes("suicide") ||
@@ -775,8 +772,7 @@ function detectCategory(text) {
   lower.includes("don't want to live") ||
   lower.includes("hurt myself") ||
   lower.includes("self harm") ||
-  lower.includes("im gonna die") ||
-  lower.includes("i'm gonna die")
+  lower.includes("unalive")
 ) return "crisis";
   if (
     lower.includes("burnout") ||
