@@ -1042,6 +1042,7 @@ function typingDelay(text) {
 }
 
 const categoryFallbackMap = {
+  language: ["language"],
   crisis: ["crisis"],
   positive: ["reactionPositive", "empathyPositive", "positiveFollowUps"],
   negative: ["reactionNegative", "empathyNegative", "negativeFollowUps"],
